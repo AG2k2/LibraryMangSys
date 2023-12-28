@@ -1,0 +1,13 @@
+A projcet to manage a library system that allow visitors to check for the availability of a book in the library and book it.
+Goals of the project:
+	for librarian:
+	- to add, edit and del books.
+	- to approve a student registeration or booking.
+	- to be able to add, edit and del librians.
+	- allow a libirian to add, edit and a book category.
+	- show the 
+
+	for visitors:
+	- to ask for a book, check if it's abailable and book it to borrow in a time less than 		24hours.
+	- to add, edit and del profiles.
+	
