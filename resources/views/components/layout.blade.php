@@ -15,7 +15,7 @@
 
     {{ $slot }}
 
-    <footer class="flex flex-col w-full gap-5 p-5 text-center bg-bgcolor-950">
+    <footer class="flex flex-col w-full gap-5 p-5 mt-auto text-center bg-bgcolor-950">
         <p class="text-xl">Created by: <span class="text-orange-900">Ammar Goher</span> (Backend dev.)</p>
         <p class="text-lg">All rights reserved | Copyright © 2023</p>
     </footer>

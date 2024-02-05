@@ -62,6 +62,14 @@
                                 <input type="number" name="copies_no" id="copies_no" value="{{ $book->copies_no  }}" class="inline-block w-16 px-2 rounded-md bg-bgcolorbg-red-800">
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                @foreach ($errors->all() as $error)
+                                    <p class="w-full text-center text-red-400 o">* {{ $error }}</p>
+                                @endforeach
+                            </td>
+                        </tr>
                     </table>
                     <div class="flex justify-end p-2">
                         <button class="p-2 rounded-md bg-bgcolor-850">

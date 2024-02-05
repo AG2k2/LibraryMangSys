@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class BookController extends Controller
 {
@@ -16,8 +17,8 @@ class BookController extends Controller
     {
         return view('books.index', [
             'books' => Book::latest()
-                            ->filter(request(['search', 'category']))
-                            ->paginate(20),
+                            ->filter(request(['search', 'category', 'availability']))
+                            ->paginate(21),
         ]);
     }
 
@@ -80,7 +81,9 @@ class BookController extends Controller
                                         ->orWhere('name', $category)
                                         ->firstOrFail()->id;
             } catch (ModelNotFoundException) {
-                return back()->withError("The {$category} category slug doesn't exist");
+                throw ValidationException::withMessages([
+                    'category' => "The category {$category} doesn't exist."
+                ]);
             };
         }
 
@@ -112,14 +115,8 @@ class BookController extends Controller
         ]);
 
         $request->validate([
-            'author' => ['bail', 'required'],
+            'author' => ['bail', 'required', 'exists:authors,name'],
         ]);
-
-        try {
-            $attributes['author_id'] = Author::where('name', $request->author)->firstOrFail()->id;
-        } catch (ModelNotFoundException) {
-            return back()->with('failure', "Author doesn't exist in the database.");
-        }
 
         if ($request->cover ?? false) {
             Storage::disk('public')->delete($book->cover);
@@ -131,8 +128,11 @@ class BookController extends Controller
         $copiesAdded = $attributes['copies_no'] - $book->copies_no;
         $attributes['available'] = $book->available + $copiesAdded;
         if($attributes['available'] < 0) {
-            return back()->with('failure', 'There are ' . $book->copies_no - $book->available . ' copies borrowed.');
+            throw ValidationException::withMessages([
+                'copies_no' => "There are " . $book->copies_no - $book->available . " copies borrowed."
+            ]);
         }
+
         $book->update($attributes);
         return back()->with('success', "book's updated successfully.");
 

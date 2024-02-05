@@ -70,9 +70,9 @@
 
                         <p class="col-span-1 text-sm {{ $borrow->return_at != null ?'text-green-500' : 'text-red-500' }}">{{ $borrow->return_at != null ? 'returned' : 'not returned' }}</p>
 
-                        <p class="col-span-1 text-sm">{{ date('Y-m-d', strtotime($borrow->taken_at)) }}</p>
+                        <p class="col-span-1 text-sm">{{ date('Y-m-d', strtotime($borrow->created_at)) }}</p>
 
-                        <p class="col-span-1 text-sm">{{ date('Y-m-d', strtotime($borrow->taken_at) + 60*60*24*7*2) }}</p>
+                        <p class="col-span-1 text-sm">{{ date('Y-m-d', strtotime($borrow->created_at) + 60*60*24*7*2) }}</p>
                     </li>
                 @endforeach
             </ul>

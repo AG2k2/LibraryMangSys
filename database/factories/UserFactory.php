@@ -27,7 +27,7 @@ class UserFactory extends Factory
             'username' => fake()->unique()->userName(),
             'address' => fake()->address(),
             'gender' => fake()->randomElement(['m' , 'f']),
-            'role' => fake()->randomElement(['libirarian', 'student', 'teacher']),
+            'role' => fake()->randomElement(['worker', 'user', 'manager']),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => fake()->optional()->dateTimeThisYear(),
             'birth_date' => fake()->date('Y-m-d', '2016-01-01'),

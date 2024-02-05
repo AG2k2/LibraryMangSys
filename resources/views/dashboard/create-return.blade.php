@@ -15,13 +15,17 @@
                     <div class="grid grid-cols-12 justify-center gap-3 p-10 mx-auto border-2 border-[#9d8d6f] bg-[#ddc69a] rounded-xl shadow-md w-7/12">
                         <h3 class="col-span-12 px-3 my-3 font-bold text-center">Borrower information:</h3>
 
-                        <label for="card_id" class="col-span-3 whitespace-nowrap ">Card ID:</label>
-                        <x-dashboard.input name='card_id' class="col-span-9"/>
+                        <label for="card_id" class="col-span-3 whitespace-nowrap">Card ID:</label>
+                        <x-dashboard.input name='card_id' class="col-span-9" value="{{ old('card_id') }}"/>
 
                         <select name="type_user" id="type_user" class="col-span-12 px-2 py-1 m-auto bg-gray-100 rounded-md w-fit">
                             <option value="user" selected>Enrolled</option>
                             <option value="guest">Guest</option>
                         </select>
+
+                        @error('card_id')
+                            <p class="col-span-12 text-base text-center text-red-500">*{{ $message }}</p>
+                        @enderror
 
                     </div>
 
@@ -30,7 +34,7 @@
                         <h3 class="col-span-12 px-3 my-3 font-bold text-center">Book information:</h3>
 
                         <label for="ISBN" class="col-span-3 whitespace-nowrap">ISBN:</label>
-                        <x-dashboard.input name='ISBN' class="col-span-9"/>
+                        <x-dashboard.input name='ISBN' class="col-span-9" value="{{ old('ISBN') }}"/>
 
                     </div>
 

@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureAuthIsManager
+class EnrollmentChecking
 {
     /**
      * Handle an incoming request.
@@ -17,8 +16,8 @@ class EnsureAuthIsManager
     public function handle(Request $request, Closure $next): Response
     {
 
-        if(Auth::user()->role !== 'manager'){
-            return redirect('/');
+        if(auth()->user()->enrolled_submitted_at == null) {
+            return back();
         }
 
         return $next($request);

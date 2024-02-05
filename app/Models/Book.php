@@ -32,26 +32,22 @@ class Book extends Model
         return $this->belongsTo(Author::class);
     }
 
-    public function students()
-    {
-        return $this->belongsToMany(User::class, 'borrows')
-                            ->orderByPivot('created_at', 'desc')
-                            ->withPivot('taken_at')
-                            ->withPivot('return_at')
-                            ->withTimestamps();
-    }
-
     public function scopeFilter($query, array $filter)
     {
         $query->when($filter['search'] ?? false, function ($query, $search){
-            return $query->where( fn($query)=>
-                    $query->where('title', 'like', '%'.$search.'%')
-        );});
+            return $query->where('title', 'like', '%'.$search.'%');
+        });
 
         $query->when($filter['category'] ?? false, function ($query, $search){
             return $query->whereHas( 'categories', fn($q) =>
                         $q->where('slug', $search)
         );});
+
+        $query->when($filter['availability'] ?? false, function($query, $available) {
+            if($available === 'available') {
+                return $query->whereNot('available', 0);
+            };
+        });
     }
 
     public function guests()

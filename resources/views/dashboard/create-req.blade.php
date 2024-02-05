@@ -47,6 +47,8 @@
                             <option value="guest" selected >Guest</option>
                             <option value="enrolled" >Enrolled</option>
                         </select>
+                        <p class="col-span-8 text-base text-red-400">you can get enrolled users by only ID</p>
+
 
                         @if (session('error'))
                             <p class="col-span-12 text-base text-red-500">* {{ session('error') }}</p>

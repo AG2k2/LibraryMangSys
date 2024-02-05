@@ -6,7 +6,7 @@
 
         <div class="py-2">
             @foreach ($book->categories as $category)
-                <a href="?category={{ $category->slug }}" class="p-1 text-sm rounded-md bg-bgcolor-700 hover:bg-bgcolor-800">{{ $category->name }}</a>
+                <a href="?category={{ $category->slug }}" class="inline-block p-1 my-1 text-sm rounded-md bg-bgcolor-700 hover:bg-bgcolor-800">{{ $category->name }}</a>
             @endforeach
         </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -12,10 +13,10 @@ class RegisterController extends Controller
         return view('register.create');
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $attributes = request()->validate([
-            'card_id' => ['bail', 'required', 'integer'],
+            'card_id' => ['bail', 'required', 'integer', 'unique:users,card_id'],
             'first_name' => ['bail', 'required', 'string'],
             'last_name' => ['bail', 'required', 'string'],
             'username' => ['bail', 'required', 'string', 'unique:users,username'],
@@ -27,8 +28,12 @@ class RegisterController extends Controller
         ]);
 
         $attributes['role'] = 'student';
-        auth()->login(User::create($attributes));
+        $user = User::create($attributes);
 
-        return redirect('/books')->with('success', '');
+        // event(new Registered($user));
+
+        auth()->login($user);
+
+        return redirect()->route('verification.notice');
     }
 }

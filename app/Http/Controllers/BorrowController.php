@@ -68,7 +68,7 @@ class BorrowController extends Controller
             $attributes['book_id'] = $book->id;
 
             if (GuestBorrow::where('card_id', $attributes['card_id'])->where('return_at', null)->count() >= 3){
-                return back()->with('failure', 'This guest has reached maximum number of borrowing');
+                return back()->with('failure', 'This guest has already borrowed 3 books.');
             }
 
             $borrowed = GuestBorrow::whereHas('book', fn($q) => $q->where('ISBN', $book->ISBN))
@@ -91,10 +91,14 @@ class BorrowController extends Controller
 
             $user = User::where('card_id', request('card_id'))->first();
 
-            if($user->books->contains($book)){
+            if ($user->books->contains($book)) {
                 if($user->books->find($book)->pivot->return_at == null){
-                    return back()->with('failure', 'The user has borrowed already this book.');
+                    return back()->with('failure', 'The user has already borrowed this book.');
                 }
+            } else if ($user->books->count() >= 3) {
+                return back()->with('failure', 'This user has already borrowed 3 books.');
+            } else if ($user->enroll_submitted_at == null) {
+                return back()-> with('failure', 'This user is not enrolled.');
             }
 
             $user->books()->attach($book);
@@ -107,12 +111,6 @@ class BorrowController extends Controller
         } else {
 
             $user = User::where('id', Auth::user()->id)->first();
-
-            if($user->books->contains($book)){
-                if($user->books->find($book)->pivot->return_at == null){
-                    return back()->with('failure', 'The user has borrowed already this book.');
-                }
-            }
 
             $user->books()->attach($book);
             return back()->with('success', 'Your request to borrow this book has been sent.');

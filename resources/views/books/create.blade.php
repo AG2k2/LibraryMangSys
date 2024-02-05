@@ -67,14 +67,14 @@
                                 <td class="w-full p-2 pl-4 bg-bgcolor-800 rounded-b-xl">
                                     <x-dashboard.input name="categories" placeholder="Insert categories slugs seperated by -"/>
                                 </td>
+                                @error('category')
+                                    <td class="text-base text-red">* {{ $message }}</td>
+                                @enderror
                             </tr>
                         </table>
                         @foreach ($errors->all() as $error)
                             <p class="w-full text-center text-red-400 o">* {{ $error }}</p>
                         @endforeach
-                        @if (session('error'))
-                            <p class="w-full text-center text-red-400 o">* {{ session('error') }}</p>
-                        @endif
                         <div class="flex justify-end p-2">
                             <button type="submit" class="p-2 rounded-md bg-bgcolor-850">
                                 Add book

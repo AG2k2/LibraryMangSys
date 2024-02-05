@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ReturnController extends Controller
 {
@@ -26,13 +27,19 @@ class ReturnController extends Controller
         ]);
 
         if ($request['type_user'] === 'user') {
+
             $this->userReturn($request['card_id'], $request['ISBN']);
             return redirect()->back()->with('success', 'Book has returned.');
+
         } else if ($request['type_user'] === 'guest') {
+
             $this->guestReturn($request['card_id'], $request['ISBN']);
             return redirect()->back()->with('success', 'Book has returned.');
+
         } else {
+
             return back();
+
         }
 
 
@@ -46,7 +53,9 @@ class ReturnController extends Controller
                             ->where('return_at', null)
                             ->firstOrFail();
         } catch (ModelNotFoundException) {
-            return back()->with('failure', 'The user has no books with given ISBN');
+            throw ValidationException::withMessages([
+                'card_id' => 'Card ID or book ISBN is not right.'
+            ]);
         }
         $borrow->update(['return_at' => Carbon::today()]);
 
@@ -62,7 +71,9 @@ class ReturnController extends Controller
                                 ->where('return_at', null)
                                 ->firstOrFail();
         } catch (ModelNotFoundException) {
-            return back()->with('falure', 'The guest has no books with given ISBN');
+            throw ValidationException::withMessages([
+                'card_id' => 'Card ID or book ISBN is not right.'
+            ]);
         }
         $borrow->update(['return_at' => Carbon::today()]);
 

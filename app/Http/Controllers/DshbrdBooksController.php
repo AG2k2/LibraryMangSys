@@ -11,7 +11,7 @@ class DshbrdBooksController extends Controller
     public function index()
     {
         return view('dashboard.books', [
-            'books' => Book::with('students', 'author')->filter(request(['bkSearch']))->orderBy($this->sortByFilter(), $this->orderType())->paginate(30),
+            'books' => Book::with('users', 'author')->filter(request(['bkSearch']))->orderBy($this->sortByFilter(), $this->orderType())->paginate(30),
         ]);
 
     }
@@ -21,7 +21,7 @@ class DshbrdBooksController extends Controller
 
         return view('dashboard.bkShow', [
             'book' => $book,
-            'students' => $book->students,
+            'students' => $book->users,
         ]);
     }
 

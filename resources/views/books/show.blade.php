@@ -1,5 +1,18 @@
 <x-layout>
 
+    @auth
+        @if (auth()->user()->email_verified_at == null)
+            <p class="p-3 m-3 mb-0 text-center bg-red-500 bg-opacity-25 rounded-lg">
+                You need to verify your email to be able to borrow books. <a href="" class="text-red-900 underline">Send email varification</a>
+            </p>
+        @endif
+        @if (auth()->user()->enroll_submitted_at == null)
+            <p class="p-3 m-3 mb-0 text-center bg-red-500 bg-opacity-25 rounded-lg">
+                You need to wait until your enrollment is submitted by one of the librarians. <a href="" class="text-red-900 underline">Send email varification</a>
+            </p>
+        @endif
+    @endauth
+
     <section class="flex flex-col gap-5 p-5 md:flex-row">
 
         <img src="{{ asset('storage/' . $book->cover) }}" alt="book cover" class="w-full h-full rounded-md md:w-60">
@@ -75,7 +88,7 @@
             @auth
                 @if(auth()->user()->email_verified_at == null || auth()->user()->enroll_submitted_at == null)
                     <p class="p-3 bg-gray-200 border border-gray-300 rounded-xl">
-                        You need to verify your email and be submitted.
+                        Your email is not verfied or your enrollment is not submitted yet.
                     </p>
                 @elseif ($isBorrowed )
                     <?php $userBorrow = $book->users->find(auth()->user())->pivot ?>

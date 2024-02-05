@@ -11,7 +11,7 @@
     @auth
         @if (in_array(auth()->user()->role, ['manager']) )
             <ul class="flex gap-1">
-                <x-nav-item route="management" value="management" req="management"/>
+                <x-nav-item route="management" value="Management" req="management"/>
             </ul>
         @endif
     @endauth

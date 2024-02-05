@@ -12,10 +12,13 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DshbrdBooksController;
 use App\Http\Controllers\DshbrdStdntsController;
+use App\Http\Controllers\EmailVerificaitonController;
 use App\Http\Controllers\GuestBorrowController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\SubmittionController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,21 +42,21 @@ Route::get('/books', [BookController::class, 'index'])
         ->name('booksIndex');
 Route::get('/books/create', [BookController::class, 'create'])
         ->name('booksCreate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::post('/books', [BookController::class, 'store'])
         ->name('booksStore')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::get('/books/{book:ISBN}', [BookController::class, 'show'])
         ->name('booksShow');
 Route::get('/books/{book:ISBN}/edit', [BookController::class, 'edit'])
         ->name('booksEdit')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::patch('/books/{book}', [BookController::class, 'update'])
         ->name('booksUpdate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::delete('/books/{book}', [BookController::class, 'destroy'])
         ->name('booksDestroy')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 
 Route::get('authors', [AuthorController::class, 'index'])
         ->name('authorsIndex');
@@ -61,80 +64,80 @@ Route::get('authors/{author}', [AuthorController::class, 'show'])
         ->name('authorsShow');
 Route::get('authors/create', [AuthorController::class, 'create'])
         ->name('authorsCreate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::post('authors', [AuthorController::class, 'store'])
         ->name('authorsStore')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::get('authors/{author}/edit', [AuthorController::class, 'edit'])
         ->name('authorsEdit')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::patch('authors/{author}', [AuthorController::class, 'update'])
         ->name('authorsUpdate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::post('authors/{author}', [AuthorController::class, 'destroy'])
         ->name('authorsDestroy')
         ->middleware('manger');
 
 Route::get('management', [ManagementController::class, 'index'])
         ->name('management')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 
 Route::get('categories/create', [CategoryController::class, 'create'])
         ->name('categoriesCreate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::post('categories', [CategoryController::class, 'store'])
         ->name('categoriesStore')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::get('categories/{category:slug}/edit', [CategoryController::class, 'edit'])
         ->name('categoriesEdit')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 Route::patch('categories/{category:slug}', [CategoryController::class, 'update'])
         ->name('categoriesUpdate')
-        ->middleware('manager');
+        ->middleware(['auth','manager']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard')
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::patch('/users/submittion/{user}', [SubmittionController::class, 'update'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::delete('/users/submittion/{user}', [SubmittionController::class, 'destroy'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/dashboard/students', [DshbrdStdntsController::class, 'index'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::get('/dashboard/submittion', [DshbrdStdntsController::class, 'enrollRequest'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::get('/dashboard/students/{user}', [DshbrdStdntsController::class, 'show'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/dashboard/borrow', [BorrowReqController::class, 'index'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/dashboard/borrow/create', [BorrowController::class, 'create'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::post('/dashboard/borrow', [BorrowController::class, 'store'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::patch('/dashboard/borrow/{borrow}', [BorrowController::class, 'update'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::delete('/dashboard/borrow/{borrow}', [BorrowController::class, 'destroy'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::post('/requests/borrow', [BorrowController::class, 'store'])
-        ->middleware(['auth', 'verified', 'submitted']);
+        ->middleware(['auth', 'verified', 'enrolled']);
 
 Route::get('/dashboard/return/create', [ReturnController::class, 'create'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::post('/dashboard/return', [ReturnController::class, 'store'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/dashboard/books', [DshbrdBooksController::class, 'index'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 Route::get('/dashboard/books/{book:ISBN}', [DshbrdBooksController::class, 'show'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/dashboard/guests', [GuestBorrowController::class, 'index'])
-        ->middleware('worker');
+        ->middleware(['auth','worker']);
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('profile')
         ->middleware('auth');
@@ -153,9 +156,26 @@ Route::post('/login', [SessionController::class, 'logIn'])
 Route::post('/logout', [SessionController::class, 'destroy'])
         ->middleware('auth');
 
-
 Route::get('/register', [RegisterController::class, 'create'])
         ->name('register')
         ->middleware('guest');
 Route::post('/register', [RegisterController::class, 'store'])
         ->middleware('guest');
+
+Route::get('/email/verify', [EmailVerificaitonController::class, 'create'])
+        ->name('verification.notice')
+        ->middleware('auth');
+
+Route::get('/email/verify/{id}/{hash}', function(EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/');
+    })
+        ->name('verification.verify')
+        ->middleware(['auth', 'signed']);
+
+Route::post('/email/verification-notification', function(Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return view('profiles.verify-email');
+    })
+        ->name('verification.send')
+        ->middleware(['auth', 'throttle:6,1']);
