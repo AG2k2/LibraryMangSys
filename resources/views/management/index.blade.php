@@ -51,12 +51,14 @@
                                 {{ $employee->card_id }}
                             </p>
 
-                            <form action="/" class="col-span-3">
-                                <input type="text" value="{{ $employee->role }}" class="w-full text-center bg-transparent">
+                            <form action={{ route('employeeRoleUpdate', $employee->id) }} class="col-span-3" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <input type="text" id="role" name="role" value="{{ $employee->role }}" class="w-full text-center bg-transparent">
                             </form>
 
                             <p class="col-span-1">
-                                <a href="/dashboard/employees/{{ $employee->id }}" class="text-sm hover:underline">
+                                <a href={{ route('employeeShow', $employee->card_id) }} class="text-sm hover:underline">
                                     More...
                                 </a>
                             </p>

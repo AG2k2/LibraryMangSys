@@ -22,10 +22,6 @@ class ProfileController extends Controller
             return route('profileEdit', $auth->username);
         }
 
-        
-
-
-
     }
 
 }

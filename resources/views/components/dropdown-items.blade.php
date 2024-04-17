@@ -1,3 +1,3 @@
-<ul x-show="show" style="display: none" {{ $attributes }}>
+<ul id="dropdown-items" {{ $attributes(["class" => "hidden"]) }}>
     {{ $slot }}
 </ul>

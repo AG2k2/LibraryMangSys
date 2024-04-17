@@ -54,7 +54,7 @@
 
                         <p class="col-span-2">{{ date('Y-m-d', strtotime($borrow->taken_at)) }}</p>
 
-                        <p class="col-span-2">{{ date('Y-m-d', strtotime($borrow->taken_at) + 60*60*24*7*2) }}</p>
+                        <p class="col-span-2">{{ $borrow->return_at == null ? date('Y-m-d', strtotime($borrow->taken_at) + 60*60*24*7*2) : $borrow->return_at }}</p>
 
                         <p class="col-span-2">
                             {{ $borrow->book->available }} / {{ $borrow->book->copies_no }}

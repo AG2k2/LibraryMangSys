@@ -1,4 +1,4 @@
-<button {{ $attributes }} @click="show= !show" >
+<button {{ $attributes }} id="dropdown-trigger">
     {{ $slot }}
     <i class="fa fa-angle-down"></i>
 </button>

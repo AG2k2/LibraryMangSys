@@ -16,34 +16,38 @@
                     <div class="grid grid-cols-12 items-center justify-center w-7/12 gap-3 p-10 mx-auto border-2 border-[#9d8d6f] bg-[#ddc69a] rounded-xl shadow-md">
                         <h3 class="col-span-12 px-3 my-3 font-bold text-center">Borrower information:</h3>
 
-                        <label for="first_name" class="col-span-3 whitespace-nowrap">First name:</label>
-                        <x-dashboard.input name='first_name' class="col-span-3" />
+                        <div id="guest-info" class="grid grid-cols-12 col-span-12 gap-3">
 
-                        <label for="last_name" class="col-span-3 text-center whitespace-nowrap">Last name:</label>
-                        <x-dashboard.input name='last_name' class="col-span-3" />
+                            <label for="first_name" class="col-span-3 whitespace-nowrap">First name:</label>
+                            <x-dashboard.input name='first_name' class="col-span-3" />
 
-                        <label for="address" class="col-span-3 whitespace-nowrap">Address:</label>
-                        <x-dashboard.input name='address' class="col-span-9" />
+                            <label for="last_name" class="col-span-3 text-center whitespace-nowrap">Last name:</label>
+                            <x-dashboard.input name='last_name' class="col-span-3" />
 
-                        <label for="birth_date" class="col-span-3 whitespace-nowrap ">Birth date:</label>
-                        <x-dashboard.input name='birth_date' class="col-span-9" type="date"/>
+                            <label for="address" class="col-span-3 whitespace-nowrap">Address:</label>
+                            <x-dashboard.input name='address' class="col-span-9" />
 
-                        <label for="birth_date" class="col-span-3 whitespace-nowrap ">Gender:</label>
-                        <select name="gender" id="gender" class="col-span-9 px-2 py-1 text-base bg-gray-100 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-500">
-                            <option value="male" selected>Male</option>
-                            <option value="female">Female</option>
-                        </select>
+                            <label for="birth_date" class="col-span-3 whitespace-nowrap ">Birth date:</label>
+                            <x-dashboard.input name='birth_date' class="col-span-9" type="date"/>
 
-                        <label for="occupation" class="col-span-3 whitespace-nowrap ">Occupation:</label>
-                        <x-dashboard.input name='occupation' class="col-span-9"/>
+                            <label for="birth_date" class="col-span-3 whitespace-nowrap ">Gender:</label>
+                            <select name="gender" id="gender" class="col-span-9 px-2 py-1 text-base bg-gray-100 border-2 border-gray-300 rounded-md focus:outline-none focus:border-gray-500">
+                                <option value="male" selected>Male</option>
+                                <option value="female">Female</option>
+                            </select>
 
-                        <label for="phone_no" class="col-span-3 whitespace-nowrap ">Phone no.:</label>
-                        <x-dashboard.input name='phone_no' class="col-span-9"/>
+                            <label for="occupation" class="col-span-3 whitespace-nowrap ">Occupation:</label>
+                            <x-dashboard.input name='occupation' class="col-span-9"/>
+
+                            <label for="phone_no" class="col-span-3 whitespace-nowrap ">Phone no.:</label>
+                            <x-dashboard.input name='phone_no' class="col-span-9"/>
+
+                        </div>
 
                         <label for="card_id" class="col-span-3 whitespace-nowrap ">ID:</label>
                         <x-dashboard.input name='card_id' class="col-span-9" />
 
-                        <select name="user" id="user" class="w-full col-span-4 m-auto rounded-md">
+                        <select name="user" id="borrower-type" class="w-full col-span-4 m-auto rounded-md">
                             <option value="guest" selected >Guest</option>
                             <option value="enrolled" >Enrolled</option>
                         </select>

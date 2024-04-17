@@ -102,7 +102,7 @@ class BorrowController extends Controller
             }
 
             $user->books()->attach($book);
-            $user->books->first()->pivot->update(['taken_at' => Carbon::today()]);
+            $user->books()->first()->pivot->update(['taken_at' => Carbon::today()]);
 
             $book->update(['available' => $book->available - 1]);
 

@@ -23,7 +23,17 @@ module.exports = {
             },
             rotate: {
                 '-4' : '-4deg',
-            }
+            },
+            animation: {
+                'goesInAndOut' : 'InAndOut 5s ease-out',
+            },
+            keyframes: {
+                'InAndOut': {
+                    '0': {bottom: '0', right: '0.75rem', opacity: '0', },
+                    '10%, 90%': {bottom: '0.75rem', right: '0.75rem', opacity: '1', },
+                    '100%': {bottom: '0', right: '0.75rem', opacity: '0', },
+                }
+            },
         },
     },
     plugins: [

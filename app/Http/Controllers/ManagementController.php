@@ -27,7 +27,7 @@ class ManagementController extends Controller
         }
 
         return view('management.index', [
-            'employees' => User::whereIn('role', ['manager', 'libirarian'])
+            'employees' => User::whereIn('role', ['manager', 'worker'])
                             ->where(fn($q) => (
                                 $q->where('first_name', 'like', '%' . $request->search . '%')
                                 ->orwhere('last_name', 'like', '%' . $request->search . '%')))

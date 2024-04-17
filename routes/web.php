@@ -13,6 +13,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DshbrdBooksController;
 use App\Http\Controllers\DshbrdStdntsController;
 use App\Http\Controllers\EmailVerificaitonController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GuestBorrowController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\ReturnController;
@@ -60,11 +61,11 @@ Route::delete('/books/{book}', [BookController::class, 'destroy'])
 
 Route::get('authors', [AuthorController::class, 'index'])
         ->name('authorsIndex');
-Route::get('authors/{author}', [AuthorController::class, 'show'])
-        ->name('authorsShow');
-Route::get('authors/create', [AuthorController::class, 'create'])
+Route::get('/authors/create', [AuthorController::class, 'create'])
         ->name('authorsCreate')
         ->middleware(['auth','manager']);
+Route::get('authors/{author}', [AuthorController::class, 'show'])
+        ->name('authorsShow');
 Route::post('authors', [AuthorController::class, 'store'])
         ->name('authorsStore')
         ->middleware(['auth','manager']);
@@ -80,6 +81,12 @@ Route::post('authors/{author}', [AuthorController::class, 'destroy'])
 
 Route::get('management', [ManagementController::class, 'index'])
         ->name('management')
+        ->middleware(['auth','manager']);
+Route::get('employees/{user:card_id}', [EmployeeController::class, 'show'])
+        ->name('employeeShow')
+        ->middleware(['auth','manager']);
+Route::patch('employees/{user}/update', [EmployeeController::class, 'update'])
+        ->name('employeeRoleUpdate')
         ->middleware(['auth','manager']);
 
 Route::get('categories/create', [CategoryController::class, 'create'])

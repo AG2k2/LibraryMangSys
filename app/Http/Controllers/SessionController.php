@@ -29,19 +29,19 @@ class SessionController extends Controller
 
         session()->regenerate();
 
-        if (auth()->user()->role === 'librarian') {
+        if (in_array(auth()->user()->role, ["worker", "manager"])) {
             return redirect()->route('dashboard');
         }
         else {
-            return redirect()->back()->with('success', 'Welcome back!');
-        }
+            return redirect()->back();
+        };
 
     }
 
     public function destroy()
     {
         auth()->logout();
-        return redirect('/');
+        return redirect("/");
     }
 
 
